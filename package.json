@@ -1,0 +1,19 @@
+{
+  "name": "benjaminbourgouinchallenge",
+  "version": "1.0.0",
+  "description": "Benjamin Bourgouin's coding challenge for Rio Tinto",
+  "main": "app.ts",
+  "scripts": {
+    "test": ""
+  },
+  "author": "Benjamin Bourgouin",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/mongodb": "^4.0.6",
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2",
+    "mongodb": "^6.8.0",
+    "typescript": "^5.5.4"
+  }
+}
