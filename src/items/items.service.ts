@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import Item from "./item.model";
-import { Db, MongoClient } from "mongodb";
+import { Db, MongoClient, ObjectId } from "mongodb";
 import { connectToDatabase } from "../helpers/db";
 
 export const router: Router = express.Router();
@@ -18,4 +18,21 @@ router.get("/items", async(req: Request, res: Response) => {
 
     const items: Item[] = JSON.parse(JSON.stringify(db.collection<Item>('inventory').find().toArray()));
     return items;
+})
+
+// Retrieve a single item by its ID.
+router.get("/items/:id", async(req: Request, res: Response) => {
+    const id: string = req.params.id;
+
+    let client: MongoClient;
+    try {
+        client = await connectToDatabase();
+    } catch (error) {
+        res.status(500).send("Request failed");
+        return;
+    }
+    const db: Db = client.db();
+
+    const item: Item = JSON.parse(JSON.stringify(db.collection('inventory').findOne({_id: new ObjectId(id)})));
+    return item;
 })
