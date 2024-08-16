@@ -3,7 +3,7 @@
 
 *** 
 
-### Projet : Simple REST API with TypeScript on AWS
+### Project : Simple REST API with TypeScript on AWS
 
 *Create a simple REST API using TypeScript that performs basic CRUD operations on a MongoDB database. The API is deployed on a free-tier AWS EC2 instance and the code is committed to this GitHub repository.*
 
@@ -17,7 +17,7 @@
 
 ***
 
-## How to launch the projet ?
+## How to launch the project ?
 
 * **Public IP :** `18.220.138.142`
 * **Port number :** `8080`
@@ -30,7 +30,7 @@ In your terminal, you can run the command `curl http://18.220.138.142:8080/api/i
 
 *** 
 
-## How to use the projet ?
+## How to use the project ?
 
 You can perform CRUD operations on a simple imitation of an inventory where every items are composed by a `name` and a `description`. 
 
@@ -97,6 +97,6 @@ curl -X DELETE http://18.220.138.142:8080/api/items/<selected-item-id>
 
 ## Dev's review 
 
-> *"This project was challenging, in a good way. It was my first time ever using AWS and deployment in general, also the second time using MongoDB, and the first time building an API from scratch using TypeScript. I'm feeling proud of what i did there, it may be not perfect but i have the feeling that i made a lot of progress only with one small project. I am confident on my ability to learn and face challenges, it is a real source of motivation and a perfect way to grow and learn constantly."*
+> *"This project was positively challenging. It was my first time ever using AWS and deployment in general, also my second time using MongoDB, and my first time building an API from scratch using TypeScript and doing some unit test cases in this programming language. I'm feeling proud of what i did there. I have the feeling that I made a lot of progress only with one small project, and I know I can still improve as a developer. I am confident on my ability to learn and face challenges, it is a real source of motivation and a perfect way to grow and learn constantly."*
 
 
