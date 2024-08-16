@@ -4,7 +4,8 @@
   "description": "Benjamin Bourgouin's coding challenge for Rio Tinto",
   "main": "app.ts",
   "scripts": {
-    "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts"
+    "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
+    "test": "jest --watch"
   },
   "author": "Benjamin Bourgouin",
   "license": "ISC",
@@ -24,7 +25,9 @@
     "@types/jest": "^29.5.12",
     "@types/mongodb": "^4.0.6",
     "@types/node": "^22.3.0",
+    "@types/supertest": "^6.0.2",
     "jest": "^29.7.0",
+    "supertest": "^7.0.0",
     "ts-jest": "^29.2.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4"

@@ -42,7 +42,7 @@ itemsRouter.post("/", async(req: Request, res: Response) => {
         }
 
         await ItemService.create(newItem);
-        res.status(201).send(`Item ${newItem.name} created successfully`)
+        res.status(201).send(`Item '${newItem.name}' created successfully`)
     } catch (error) {
         res.status(500).send((<Error>error).message)
     } finally {
