@@ -32,7 +32,7 @@ export const findById = async(id: string): Promise<Item> => {
     let item: Item = {id: "", name: "", description: ""};
     await db.collection('inventory').findOne({_id: new ObjectId(id)}).then(result => {
         item = JSON.parse(JSON.stringify(result));
-    }).catch(error => {throw new Error("Something went wrong.")});
+    }).catch(error => {throw new Error("Item with provided id doesn't exist")});
     return item;
 }
 

@@ -33,6 +33,14 @@ itemsRouter.get("/:id", async(req: Request, res: Response) => {
 itemsRouter.post("/", async(req: Request, res: Response) => {
     const newItem: BaseItem = {name: <string>req.body.name, description: <string>req.body.description}
     try{
+        if(typeof newItem.name !== 'string'
+            || newItem.name === ''
+            || typeof newItem.description !== 'string'
+            || newItem.name === ''
+        ) {
+            throw new Error("You must provide a name and a description to create a new item")
+        }
+
         await ItemService.create(newItem);
         res.status(201).send(`Item ${newItem.name} created successfully`)
     } catch (error) {
@@ -47,6 +55,18 @@ itemsRouter.put("/:id", async(req: Request, res: Response) => {
     const id: string = req.params.id;
     const updatedItem: BaseItem = {name: <string>req.body.name, description: <string>req.body.description};
     try {
+        if(typeof id !== 'string' || id === ''){
+            throw new Error("You must provide the id of the item you want to update.")
+        }
+        
+        if(typeof updatedItem.name !== 'string'
+            || updatedItem.name === ''
+            || typeof updatedItem.description !== 'string'
+            || updatedItem.name === ''
+        ) {
+            throw new Error("You must provide a name and a description to update an item.")
+        }
+
         await ItemService.update(id, updatedItem);
         res.status(200).send(`Item '${updatedItem.name}' updated successfully`);
     } catch (error) {
@@ -60,6 +80,10 @@ itemsRouter.put("/:id", async(req: Request, res: Response) => {
 itemsRouter.delete("/:id", async(req: Request, res: Response) => {
     const id: string = req.params.id;
     try {
+        if(typeof id !== 'string' || id === ''){
+            throw new Error("You must provide the id of the item you want to delete.")
+        }
+
         await ItemService.remove(id);
         res.status(204).send("Item deleted successfully");
     } catch (error) {
