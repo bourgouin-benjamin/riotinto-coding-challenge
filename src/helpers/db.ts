@@ -1,7 +1,10 @@
 import { MongoClient } from "mongodb";
+import * as dotenv from 'dotenv';
+
+dotenv.config()
 
 export async function connectToDatabase() {
-    const URL: string = "mongodb+srv://benjaminbourgouin:NAfikEht6IuNguMx@benjaminbourgouincoding.wbyn7.mongodb.net/coding-store?retryWrites=true&w=majority&appName=BenjaminBourgouinCodingChallenge"
+    const URL: string = <string>process.env.MONGODB_URI;
     const client: MongoClient = await MongoClient.connect(URL)
     return client;
 }

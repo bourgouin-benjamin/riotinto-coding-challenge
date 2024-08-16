@@ -7,20 +7,8 @@ node_modules/
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
-.eslintcache
-
-# Optional stylelint cache
-.stylelintcache
-
-# Serverless Webpack directories
-.webpack/
-
-### VisualStudioCode ###
+# VisualStudioCode #
 .vscode/*
 
-# Local History for Visual Studio Code
-.history/
-
-# Ignore all local history of files
-.history
+# Txt files #
+*.txt
