@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import { Db, MongoClient, ObjectId } from "mongodb";
 import Item from "./item.model";
 import { connectToDatabase } from "../helpers/db";

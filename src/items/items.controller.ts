@@ -1,7 +1,5 @@
 import express, { Request, Response, Router } from "express";
 import Item from './item.model';
-import { Db, MongoClient, ObjectId } from "mongodb";
-import { connectToDatabase } from "../helpers/db";
 import * as ItemService from "./items.service"
 
 export const router: Router = express.Router();
