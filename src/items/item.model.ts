@@ -1,6 +1,8 @@
-interface Item {
-    name: string,
-    description: string
+export interface BaseItem {
+    name: string;
+    description: string;
 }
 
-export default Item;
+export interface Item extends BaseItem{
+    id: string;
+}

@@ -1,5 +1,5 @@
 import { Db, MongoClient, ObjectId } from "mongodb";
-import Item from "./item.model";
+import { BaseItem, Item } from "./item.model";
 import { connectToDatabase } from "../helpers/db";
 
 let client: MongoClient;
@@ -15,7 +15,11 @@ export const findAll = async(): Promise<Item[]> => {
         throw new Error("Connection impossible, request failed")
     }
     const db: Db = client.db();
-    return JSON.parse(JSON.stringify(db.collection<Item>('inventory').find().toArray()));
+    let items: Item[] = [];
+    await db.collection('inventory').find({}).toArray().then(result => {
+        items = JSON.parse(JSON.stringify(result));
+    }).catch(error => {throw new Error("Something went wrong.")});
+    return items;
 }
 
 export const findById = async(id: string): Promise<Item> => {
@@ -25,10 +29,14 @@ export const findById = async(id: string): Promise<Item> => {
         throw new Error("Connection impossible, request failed")
     }
     const db: Db = client.db();
-    return JSON.parse(JSON.stringify(db.collection<Item>('inventory').findOne({_id: new ObjectId(id)})));
+    let item: Item = {id: "", name: "", description: ""};
+    await db.collection('inventory').findOne({_id: new ObjectId(id)}).then(result => {
+        item = JSON.parse(JSON.stringify(result));
+    }).catch(error => {throw new Error("Something went wrong.")});
+    return item;
 }
 
-export const create = async(newItem: Item): Promise<Item> => {
+export const create = async(newItem: BaseItem): Promise<void> => {
     try {
         client = await connectToDatabase();
     } catch (error) {
@@ -36,15 +44,14 @@ export const create = async(newItem: Item): Promise<Item> => {
     }
     const db: Db = client.db();
 
-    try {
-        await db.collection<Item>('inventory').insertOne(newItem)
-    } catch (error) {
-        throw new Error("Something went wrong during the insertion of the new item.");
+    try{
+        await db.collection('inventory').insertOne({name: newItem.name, description: newItem.description})
+    } catch(error) {
+        throw new Error("Something went wront during item creation")
     }
-    return newItem;
 }
 
-export const update = async(id: string, item: Item): Promise<Item> => {
+export const update = async(id: string, itemUpdate: BaseItem): Promise<void> => {
     try {
         client = await connectToDatabase();
     } catch (error) {
@@ -52,20 +59,18 @@ export const update = async(id: string, item: Item): Promise<Item> => {
     }
     const db: Db = client.db();
 
-    const existingItem: Item = JSON.parse(JSON.stringify(db.collection<Item>('inventory').findOne({_id: new ObjectId(id)})));
+    let existingItem: Item = {id: "", name: "", description: ""};
+    await db.collection('inventory').findOne({_id: new ObjectId(id)}).then(result => {
+        existingItem = JSON.parse(JSON.stringify(result));
+    });
     if(existingItem){
-        try{
-            db.collection<Item>('inventory').updateOne(
-                { _id: new ObjectId(id)},
-                { $set: { name: item.name, description: item.description } }
-            )
-        } catch (error) {
-            throw new Error("Something when wrong during item update.")
-        }
+        await db.collection('inventory').updateOne(
+            { _id: new ObjectId(id)},
+            { $set: { name: itemUpdate.name, description: itemUpdate.description } }
+        ).catch(error => {throw new Error("Something went wrong during item update.")})
     } else {
         throw new Error("Target item doesn't exist.")
     }
-    return item;
 }
 
 export const remove = async(id: string): Promise<void> => {
@@ -76,14 +81,15 @@ export const remove = async(id: string): Promise<void> => {
     }
     const db: Db = client.db();
 
-    const existingItem: Item = JSON.parse(JSON.stringify(db.collection<Item>('inventory').findOne({_id: new ObjectId(id)})));
+    let existingItem: Item = {id: "", name: "", description: ""};;
+    await db.collection<Item>('inventory').findOne({_id: new ObjectId(id)}).then(result => {
+        existingItem = JSON.parse(JSON.stringify(result));
+    });
     if(!existingItem) {
         throw new Error("Item with provided id doesn't exist.")
     }
 
-    try {
-        await db.collection('inventory').deleteOne({ _id: new ObjectId(id) })
-    } catch (error) {
-        throw new Error("Something wetn wrong during item delete.")
-    }
+    await db.collection('inventory').deleteOne({ _id: new ObjectId(id) }).catch(error => {
+        throw new Error("Something wetn wrong during item delete.");
+    })
 }
