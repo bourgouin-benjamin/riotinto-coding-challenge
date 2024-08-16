@@ -12,3 +12,6 @@ node_modules/
 
 # Txt files #
 *.txt
+
+# Environment # 
+.env
