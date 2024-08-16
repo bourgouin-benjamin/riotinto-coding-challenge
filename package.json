@@ -2,7 +2,7 @@
   "name": "benjaminbourgouinchallenge",
   "version": "1.0.0",
   "description": "Benjamin Bourgouin's coding challenge for Rio Tinto",
-  "main": "app.ts",
+  "main": "server/server.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
     "test": "jest --watch",
