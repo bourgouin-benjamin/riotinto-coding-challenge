@@ -20,18 +20,22 @@
 ## How to launch the projet ?
 
 * **Public IP :** ==18.220.138.142==
-* **Port number :** %8080%
-* **API endpoint :** %/api/items%
+* **Port number :** `8080`
+* **API endpoint :** `/api/items`
 
-In your terminal, you can run the command %curl http://18.220.138.142:8080/api/items% to connect to the server. You should get a list of all existing items in the database. 
-__NB:__ This list may be empty, you should then receive an empty array %[]%
+In your terminal, you can run the command `curl http://18.220.138.142:8080/api/items` to connect to the server. You should get a list of all existing items in the database. 
+
+> [!NOTE]
+> This list may be empty, you should then receive an empty array `[]`
+
+<br>
 
 
 *** 
 
 ## How to use the projet ?
 
-You can perform CRUD operations on a simple imitation of an inventory where every items are composed by a %name% and a %description%. 
+You can perform CRUD operations on a simple imitation of an inventory where every items are composed by a `name` and a `description`. 
 
 #### POST - Create an item 
 
@@ -48,7 +52,10 @@ curl -X POST -H 'Content-Type: application/json' -d '{
 curl http://18.220.138.142:8080/api/items
 ```
 
-__NB:__ You can see that there is a field %_id% for all item. This field is automatically generated in MongoDB. For the next operations, you'll need an ID in your request, make sure to copy one.
+> [!NOTE]
+> You can see that there is a field `_id` for all item. This field is automatically generated in MongoDB. For the next operations, you'll need an ID in your request, make sure to copy one.
+
+<br>
 
 #### GET - Get an item by its ID
 
@@ -65,7 +72,10 @@ curl -X PUT -H 'Content-Type: application/json' -d '{
 }' http://18.220.138.142:8080/api/items/<selected-item-id> 
 ```
 
-__NB:__ You need to provide both name **AND** description. If you don't want to update one of these informations, write the same as it is.
+> [!NOTE]
+> You need to provide both name **AND** description. If you don't want to update one of these informations, write the same as it is already saved in the database.
+
+<br>
 
 #### DELETE - Remove an item by its ID
 
@@ -73,7 +83,10 @@ __NB:__ You need to provide both name **AND** description. If you don't want to 
 curl -X DELETE http://18.220.138.142:8080/api/items/<selected-item-id> 
 ```
 
-__NB:__ Using this command will permanently remove the item from the database ! 
+> [!CAUTION]
+> Using this command will permanently remove the item from the database ! 
+
+<br>
 
 *** 
 
