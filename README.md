@@ -19,7 +19,7 @@
 
 ## How to launch the projet ?
 
-* **Public IP :** ==18.220.138.142==
+* **Public IP :** `18.220.138.142`==`
 * **Port number :** `8080`
 * **API endpoint :** `/api/items`
 
@@ -28,14 +28,13 @@ In your terminal, you can run the command `curl http://18.220.138.142:8080/api/i
 > [!NOTE]
 > This list may be empty, you should then receive an empty array `[]`
 
-<br>
-
-
 *** 
 
 ## How to use the projet ?
 
 You can perform CRUD operations on a simple imitation of an inventory where every items are composed by a `name` and a `description`. 
+
+<br>
 
 #### POST - Create an item 
 
@@ -45,6 +44,8 @@ curl -X POST -H 'Content-Type: application/json' -d '{
     "description": "New Description"
 }' http://18.220.138.142:8080/api/items 
 ```
+
+<br>
 
 #### GET - Get all items 
 
@@ -63,6 +64,8 @@ curl http://18.220.138.142:8080/api/items
 curl http://18.220.138.142:8080/api/items/<selected-item-id>
 ```
 
+<br>
+
 #### PUT - Update an item by its ID
 
 ```
@@ -71,6 +74,8 @@ curl -X PUT -H 'Content-Type: application/json' -d '{
     "description": "Updated description"
 }' http://18.220.138.142:8080/api/items/<selected-item-id> 
 ```
+
+<br>
 
 > [!NOTE]
 > You need to provide both name **AND** description. If you don't want to update one of these informations, write the same as it is already saved in the database.
