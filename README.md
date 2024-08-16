@@ -19,7 +19,7 @@
 
 ## How to launch the projet ?
 
-* **Public IP :** %18.220.138.142%
+* **Public IP :** ==18.220.138.142==
 * **Port number :** %8080%
 * **API endpoint :** %/api/items%
 
