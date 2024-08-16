@@ -1,123 +1,90 @@
-import express, { Request, Response, Router } from "express";
-import Item from "./item.model";
+import { Request, Response } from "express";
 import { Db, MongoClient, ObjectId } from "mongodb";
+import Item from "./item.model";
 import { connectToDatabase } from "../helpers/db";
 
-export const router: Router = express.Router();
+let client: MongoClient;
 
-// Retrieve a list of all items.
-router.get("/items", async(req: Request, res: Response) => {
-    let client: MongoClient;
-    try {
-        client = await connectToDatabase();
-    } catch (error) {
-        res.status(500).send("Request failed");
-        return;
-    }
-    const db: Db = client.db();
-
-    const items: Item[] = JSON.parse(JSON.stringify(db.collection<Item>('inventory').find().toArray()));
+export const closeClient = () => {
     client.close();
-    return items;
-})
+}
 
-// Retrieve a single item by its ID.
-router.get("/items/:id", async(req: Request, res: Response) => {
-    const id: string = req.params.id;
-
-    let client: MongoClient;
+export const findAll = async(): Promise<Item[]> => {
     try {
         client = await connectToDatabase();
     } catch (error) {
-        res.status(500).send("Request failed");
-        return;
+        throw new Error("Connection impossible, request failed")
     }
     const db: Db = client.db();
+    return JSON.parse(JSON.stringify(db.collection<Item>('inventory').find().toArray()));
+}
 
-    const item: Item = JSON.parse(JSON.stringify(db.collection('inventory').findOne({_id: new ObjectId(id)})));
-    client.close();
-    return item;
-})
-
-// Create a new item in the database.
-router.post("/", async(req: Request, res: Response) => {
-    const item: Item = req.body;
-
-    let client: MongoClient;
+export const findById = async(id: string): Promise<Item> => {
     try {
         client = await connectToDatabase();
     } catch (error) {
-        res.status(500).send("Request failed");
-        return;
+        throw new Error("Connection impossible, request failed")
+    }
+    const db: Db = client.db();
+    return JSON.parse(JSON.stringify(db.collection<Item>('inventory').findOne({_id: new ObjectId(id)})));
+}
+
+export const create = async(newItem: Item): Promise<Item> => {
+    try {
+        client = await connectToDatabase();
+    } catch (error) {
+        throw new Error("Connection impossible, request failed")
     }
     const db: Db = client.db();
 
     try {
-        await db.collection('inventory').insertOne(item)
+        await db.collection<Item>('inventory').insertOne(newItem)
     } catch (error) {
-        res.status(500).send("Request failed");
-        return;
+        throw new Error("Something went wrong during the insertion of the new item.");
     }
+    return newItem;
+}
 
-    // Success 
-    client.close()
-    res.status(200).send(`Item ${item.name} added successfully`)
-})
-
-// Update an existing item by its ID.
-router.put("items/:id", async(req: Request, res: Response) => {
-    const id: string = req.params.id;
-    const item: Item = req.body;
-    
-    let client: MongoClient;
+export const update = async(id: string, item: Item): Promise<Item> => {
     try {
         client = await connectToDatabase();
     } catch (error) {
-        res.status(500).send("Request failed");
-        return;
+        throw new Error("Connection impossible, request failed")
     }
     const db: Db = client.db();
 
-    const existingItem: Item = JSON.parse(JSON.stringify(db.collection('inventory').findOne({_id: new ObjectId(id)})));
+    const existingItem: Item = JSON.parse(JSON.stringify(db.collection<Item>('inventory').findOne({_id: new ObjectId(id)})));
     if(existingItem){
         try{
-            db.collection('inventory').updateOne(
+            db.collection<Item>('inventory').updateOne(
                 { _id: new ObjectId(id)},
                 { $set: { name: item.name, description: item.description } }
             )
         } catch (error) {
-            res.status(500).send("Request failed");
-            client.close();
-            return;
+            throw new Error("Something when wrong during item update.")
         }
-
-        // Success 
-        client.close();
-        res.status(200).send(`Item ${item.name} updated successfully`);
+    } else {
+        throw new Error("Target item doesn't exist.")
     }
-})
+    return item;
+}
 
-// Update an existing item by its ID.
-router.delete("/items/:id", async(req: Request, res: Response) => {
-    const id: string = req.params.id;
-
-    let client: MongoClient;
+export const remove = async(id: string): Promise<void> => {
     try {
         client = await connectToDatabase();
     } catch (error) {
-        res.status(500).send("Request failed");
-        return;
+        throw new Error("Connection impossible, request failed")
     }
     const db: Db = client.db();
+
+    const existingItem: Item = JSON.parse(JSON.stringify(db.collection<Item>('inventory').findOne({_id: new ObjectId(id)})));
+    if(!existingItem) {
+        throw new Error("Item with provided id doesn't exist.")
+    }
 
     try {
         await db.collection('inventory').deleteOne({ _id: new ObjectId(id) })
     } catch (error) {
-        res.status(500).send("Impossible to delete this item");
+        throw new Error("Something wetn wrong during item delete.")
     }
-
-    // Success 
-    client.close();
-    res.status(200).send("Item deleted successfully");
-})
-
+}
